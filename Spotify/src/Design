@@ -1,0 +1,38 @@
+Functional Requirements
+Support both free and premium tiers for users
+Support adding songs, albums, playlists, and artists
+Allow users to play songs, albums, and playlists uniformly
+Support playback controls: play, pause, and skip (next track).
+Support creation and management of playlists (create, delete, add/remove songs)
+Allow users to search for songs by title or search for artists by name
+Generate song recommendations using pluggable strategies (e.g., genre-based, randomized).
+
+Non-Functional Requirements
+Modularity: The system should be composed of well-defined modules
+Extensibility: The design should be flexible to allow future additions
+Maintainability: Code should be modular, easy to test, and cleanly organized
+
+1. Support playing individual songs, albums, and playlists uniformly.
+This points to the core content entities: Song, Album, and Playlist.
+The need to treat them "uniformly" is a strong indicator for the Composite design pattern.
+This leads to a Playable interface that all three content types implement, allowing the Player to handle them interchangeably.
+
+2. Support playback controls (play, pause, next).
+This suggests a central Player entity to manage the playback queue and state.
+
+3. Support both free and premium user tiers with different playback experiences.
+The system needs a User entity to represent the listener. The difference in playback (e.g., with or without ads) is a behavioral concern,
+which is handled by the Strategy pattern. This introduces a PlaybackStrategy interface with different implementations (FreePlaybackStrategy, PremiumPlaybackStrategy). A SubscriptionTier enum (FREE, PREMIUM) is used to determine which strategy a User gets.
+
+Provide a simplified, high-level interface to the system.
+To manage the interactions between all these components, an MusicStreamingSystem class acts as a Facade and Singleton. It provides a simple entry point to interact with the entire system.
+
+Summary of Core Entities
+Playable (Interface): The core abstraction of the Composite pattern, allowing Song, Album, and Playlist to be treated uniformly by the player.
+Song, Album, Playlist: Concrete Playable entities that represent the music content in the system.
+User: Represents a listener in the system. Holds a PlaybackStrategy based on their subscription.
+Artist: Represents the music creator. Acts as a Subject that notifies its followers of new releases.
+Player: The central playback engine that manages the music queue and current song.
+Services (SearchService, RecommendationService): Classes that encapsulate business logic for searching the catalog and generating recommendations.
+Enums (SubscriptionTier, PlayerStatus): Define fixed sets of constants for user types and player states, ensuring consistency.
+MusicStreamingSystem: A Facade and Singleton that provides a simplified, high-level API to the entire system.
