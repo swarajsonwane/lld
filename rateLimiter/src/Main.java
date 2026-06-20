@@ -108,24 +108,30 @@ public class Main {
         // Config for /api/auth endpoint - stricter
         Map<String, Object> authConfig = new HashMap<>();
         authConfig.put("endpoint", "/api/auth");
-        authConfig.put("type", "TOKEN_BUCKET");
-        authConfig.put("capacity", 3);
-        authConfig.put("refillRate", 1);
+        authConfig.put("algorithm", "TokenBucket");
+        Map<String, Object> authAlgoConfig = new HashMap<>();
+        authAlgoConfig.put("capacity", 3);
+        authAlgoConfig.put("refillRatePerSecond", 1);
+        authConfig.put("algoConfig", authAlgoConfig);
         configs.add(authConfig);
         
         // Config for /api/data endpoint - more lenient
         Map<String, Object> dataConfig = new HashMap<>();
         dataConfig.put("endpoint", "/api/data");
-        dataConfig.put("type", "TOKEN_BUCKET");
-        dataConfig.put("capacity", 10);
-        dataConfig.put("refillRate", 5);
+        dataConfig.put("algorithm", "TokenBucket");
+        Map<String, Object> dataAlgoConfig = new HashMap<>();
+        dataAlgoConfig.put("capacity", 10);
+        dataAlgoConfig.put("refillRatePerSecond", 5);
+        dataConfig.put("algoConfig", dataAlgoConfig);
         configs.add(dataConfig);
         
         // Default config for other endpoints
         Map<String, Object> defaultConfig = new HashMap<>();
-        defaultConfig.put("type", "TOKEN_BUCKET");
-        defaultConfig.put("capacity", 5);
-        defaultConfig.put("refillRate", 2);
+        defaultConfig.put("algorithm", "TokenBucket");
+        Map<String, Object> defaultAlgoConfig = new HashMap<>();
+        defaultAlgoConfig.put("capacity", 5);
+        defaultAlgoConfig.put("refillRatePerSecond", 2);
+        defaultConfig.put("algoConfig", defaultAlgoConfig);
         
         RateLimiter rateLimiter = new RateLimiter(configs, defaultConfig);
         String clientId = "user-123";
